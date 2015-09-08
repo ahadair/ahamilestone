@@ -13,7 +13,7 @@ app_lulu.questions={}
 
 
 
-##app_lulu.questions['Which fruit do you like best?']=('banana','mango','pineapple')
+#####app_lulu.questions['Which fruit do you like best?']=('banana','mango','pineapple')
 ##app_lulu.questions['Do you like cupcakes?']=('yes','no','maybe')
 
 app_lulu.nquestions=len(app_lulu.questions)
