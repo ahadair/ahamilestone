@@ -2,8 +2,9 @@ from flask import Flask,render_template,request,redirect
 import requests
 import simplejson as json
 from datetime import datetime
-#from bokeh.plotting import figure, show, output_file
-from bokeh.plotting import figure, show, output_notebook
+from bokeh.plotting import figure, show, output_file
+#from bokeh.plotting import figure, show, output_notebook
+#from bokeh.plotting import figure, show, output_server
 
 app_lulu = Flask(__name__)
 app_lulu.vars={}
@@ -63,9 +64,9 @@ def index_lulu():
         #print datecol, closecol, volumecol, adjclosecol
         data = thedict["dataset"]["data"]
 
-
-        #output_file("markers.html")
-        output_notebook
+        #output_server("AHAmarkers.html")
+        output_file("markers.html")
+        #output_notebook
         #range okay
         p = figure(width=800, height=500, x_axis_type="datetime", x_range=(datetime(prioryear,priormonth,priorday), datetime(newestyear,newestmonth,newestday)))
 
