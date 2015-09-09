@@ -88,6 +88,14 @@ def index():
 
 
 
+@app.route('/')
+def redir():
+    return redirect('/index')
+
+
+
 
 if __name__ == "__main__":
     app.run()
+
+
