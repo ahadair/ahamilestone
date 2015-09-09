@@ -80,7 +80,7 @@ def index():
             p.line(datelist, closecollist, color='navy', alpha=0.5, legend='close')
 
 
-        p.title = "%s Stock Fluctations for ~ the last month" % (stock)
+        p.title = "%s Stock Fluctations for the last month" % (stock)
         p.xaxis.axis_label = 'date'
 
         script, div = components(p)
