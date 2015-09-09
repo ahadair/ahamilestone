@@ -32,59 +32,70 @@ def index():
         app.vars['aprice'] = request.form['aprice_lulu']
         app.vars['volume'] = request.form['volume_lulu']
 
+
+
+
         stock = app.vars['ticker']
         path = 'https://www.quandl.com/api/v3/datasets/WIKI/%s.json' % (stock)
-        r = requests.get(path)
-        thedict = json.loads(r.text)
-        newestdate = thedict["dataset"]["newest_available_date"]
-        newestyear, newestmonth, newestday = get_date(newestdate)
-        prioryear = newestyear
-        priormonth = newestmonth - 1
-        priorday = newestday
-        if priormonth == 0:
-            priormonth = 12
-            prioryear = prioryear - 1
-        priordate = '%s-%s-%s' % (prioryear, priormonth, priorday)
-        columnnames = thedict["dataset"]["column_names"]
-        datecol = columnnames.index("Date")
-        closecol = columnnames.index("Close")
-        adjclosecol = columnnames.index("Adj. Close")
-        volumecol = columnnames.index("Volume")
-        print newestdate, newestyear, newestmonth, newestday
-        print priordate, prioryear, priormonth, priorday
-        data = thedict["dataset"]["data"]
+
+        try:
+            r = requests.get(path)
+
+            thedict = json.loads(r.text)
+            newestdate = thedict["dataset"]["newest_available_date"]
+            newestyear, newestmonth, newestday = get_date(newestdate)
+            prioryear = newestyear
+            priormonth = newestmonth - 1
+            priorday = newestday
+            if priormonth == 0:
+                priormonth = 12
+                prioryear = prioryear - 1
+            priordate = '%s-%s-%s' % (prioryear, priormonth, priorday)
+            columnnames = thedict["dataset"]["column_names"]
+            datecol = columnnames.index("Date")
+            closecol = columnnames.index("Close")
+            adjclosecol = columnnames.index("Adj. Close")
+            volumecol = columnnames.index("Volume")
+            print newestdate, newestyear, newestmonth, newestday
+            print priordate, prioryear, priormonth, priorday
+            data = thedict["dataset"]["data"]
 
 
-        #range okay
-        p = figure(width=800, height=500, x_axis_type="datetime", x_range=(datetime(prioryear,priormonth,priorday), datetime(newestyear,newestmonth,newestday)))
+            #range okay
+            p = figure(width=800, height=500, x_axis_type="datetime", x_range=(datetime(prioryear,priormonth,priorday), datetime(newestyear,newestmonth,newestday)))
 
 
-        datelist = []
-        closecollist = []
-        volumecollist = []
-        adjclosecollist = []
-        for row in data:
-            rowyear, rowmonth, rowday = get_date(row[datecol])
-            datelist.append(datetime(rowyear,rowmonth,rowday))
-            closecollist.append(row[closecol])
-            volumecollist.append(row[volumecol])
-            adjclosecollist.append(row[adjclosecol])
+            datelist = []
+            closecollist = []
+            volumecollist = []
+            adjclosecollist = []
+            for row in data:
+                rowyear, rowmonth, rowday = get_date(row[datecol])
+                datelist.append(datetime(rowyear,rowmonth,rowday))
+                closecollist.append(row[closecol])
+                volumecollist.append(row[volumecol])
+                adjclosecollist.append(row[adjclosecol])
 
-        if app.vars['volume']=='checked':
-            p.line(datelist, volumecollist, color='red', alpha=0.5, legend='Volume')
+            if app.vars['volume']=='checked':
+                p.line(datelist, volumecollist, color='red', alpha=0.5, legend='Volume')
 
-        if app.vars['aprice']=='checked':
-            p.line(datelist, adjclosecollist, color='green', alpha=0.5, legend='Adjusted Closing price')
+            if app.vars['aprice']=='checked':
+                p.line(datelist, adjclosecollist, color='green', alpha=0.5, legend='Adjusted closing price')
 
-        if app.vars['cprice']=='checked':
-            p.line(datelist, closecollist, color='navy', alpha=0.5, legend='Closing price')
+            if app.vars['cprice']=='checked':
+                p.line(datelist, closecollist, color='navy', alpha=0.5, legend='Closing price')
 
 
-        p.title = "%s Stock Fluctations for the last month" % (stock)
-        p.xaxis.axis_label = 'date'
+            p.title = "%s stock fluctuations for the last month" % (stock)
+            p.xaxis.axis_label = 'date'
 
-        script, div = components(p)
-        return render_template("graph.html", script=Markup(script),div=Markup(div))
+            script, div = components(p)
+            return render_template("graph.html", script=Markup(script),div=Markup(div))
+
+        except:
+            return render_template("error.html")
+
+
 
 
 
