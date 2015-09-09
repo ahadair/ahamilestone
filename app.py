@@ -71,13 +71,13 @@ def index():
             adjclosecollist.append(row[adjclosecol])
 
         if app.vars['volume']=='checked':
-            p.line(datelist, volumecollist, color='red', alpha=0.5, legend='volume')
+            p.line(datelist, volumecollist, color='red', alpha=0.5, legend='Volume')
 
         if app.vars['aprice']=='checked':
-            p.line(datelist, adjclosecollist, color='green', alpha=0.5, legend='adj. close')
+            p.line(datelist, adjclosecollist, color='green', alpha=0.5, legend='Adj. Close')
 
         if app.vars['cprice']=='checked':
-            p.line(datelist, closecollist, color='navy', alpha=0.5, legend='close')
+            p.line(datelist, closecollist, color='navy', alpha=0.5, legend='Close')
 
 
         p.title = "%s Stock Fluctations for the last month" % (stock)
