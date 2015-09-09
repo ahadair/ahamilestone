@@ -21,8 +21,8 @@ def get_date(jsondate):
 
 
 
-@app.route('/index_lulu',methods=['GET','POST'])
-def index_lulu():
+@app.route('/index',methods=['GET','POST'])
+def index():
     if request.method == 'GET':
         return render_template('userinfo.html')
     else:
